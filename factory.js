@@ -1,4 +1,4 @@
-import web3 from './web3';
+import web3 from '../web3';
 import CampaignFactory from './build/CampaignFactory.json';
 
 const _ADDRESS = process.env.CONTRACT_ADDRESS;
