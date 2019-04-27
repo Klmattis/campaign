@@ -1,14 +1,16 @@
-pragma solidity ^0.4.25;
+///@title Campaign Smart Contract v1.0
+///@author Keith Mattison
+
+pragma solidity ^0.5.0;
 
 contract CampaignFactory {
-    address[] public deployedCampaigns;
-    
+    Campaign[] public deployedCampaigns;
     function createCampaign(uint minimum) public {
-        address newCampaign = new Campaign(minimum, msg.sender);
+        Campaign newCampaign = new Campaign(minimum, msg.sender);
         deployedCampaigns.push(newCampaign);
     }
     
-    function getDeployedCampaigns() public view returns (address[]) {
+    function getDeployedCampaigns() public view returns (Campaign[] memory) {
         return deployedCampaigns;
     }
 }
@@ -17,7 +19,7 @@ contract Campaign {
     struct Request {
         string description;
         uint value;
-        address recipient;
+        address payable recipient;
         bool complete;
         mapping(address => bool) approvals;
         uint approvalCount;
@@ -46,7 +48,7 @@ contract Campaign {
         approversCount++;
     }
     
-    function createRequest(string description, uint value, address recipient) public restricted {
+    function createRequest(string memory description, uint value, address payable recipient) public restricted {
         Request memory newRequest = Request({
             description: description,
             value: value,
@@ -81,7 +83,7 @@ contract Campaign {
     function getSummary() public view returns (uint, uint, uint, uint, address) {
         return (
             minimumContribution,
-            this.balance,
+            address(this).balance,
             requests.length,
             approversCount,
             manager
