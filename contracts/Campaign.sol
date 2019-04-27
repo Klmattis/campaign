@@ -1,7 +1,7 @@
 ///@title Campaign Smart Contract v1.0
 ///@author Keith Mattison
 
-pragma solidity ^0.5.0;
+pragma solidity ^0.4.25;
 
 contract CampaignFactory {
     Campaign[] public deployedCampaigns;
@@ -19,7 +19,7 @@ contract Campaign {
     struct Request {
         string description;
         uint value;
-        address payable recipient;
+        address recipient;
         bool complete;
         mapping(address => bool) approvals;
         uint approvalCount;
@@ -48,7 +48,7 @@ contract Campaign {
         approversCount++;
     }
     
-    function createRequest(string memory description, uint value, address payable recipient) public restricted {
+    function createRequest(string memory description, uint value, address recipient) public restricted {
         Request memory newRequest = Request({
             description: description,
             value: value,
